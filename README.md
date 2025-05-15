@@ -149,8 +149,4 @@ CMD ["flask", "run"]
 | `tests/` (recommended)            | Directory for pytest-based unit tests            |
 | `app/app.py`                      | Flask application entry point                    |
 
----
 
-## 📄 License
-
-This project is open-source. You can use it freely under the terms of your chosen license (e.g., MIT, Apache-2.0).
