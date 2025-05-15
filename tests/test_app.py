@@ -6,7 +6,7 @@
 
 
 import pytest
-from Proa-test/app/app import app  # Replace with the name of your Python file without `.py`
+from app.app import app  # Replace with the name of your Python file without `.py`
 
 @pytest.fixture
 def client():
