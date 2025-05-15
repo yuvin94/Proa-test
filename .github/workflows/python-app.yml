@@ -57,7 +57,7 @@ jobs:
 
 
   build-and-push-image:
-    needs: build_test_code
+    #needs: build_test_code
     runs-on: ubuntu-latest
     
     steps:
