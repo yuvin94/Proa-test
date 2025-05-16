@@ -24,8 +24,7 @@ env:
     AZURE_WEBAPP_PACKAGE_PATH: '.' # Set this to the path to your web app project, defaults to the repository root
 
 jobs:
-  build_test_code:
-
+  build_code:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,18 +38,31 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+  
+  lint_code:
+    needs: build_code
+    runs-on: ubuntu-latest
+    steps:
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        
+  pytest_code:
+    needs: build_code
+    runs-on: ubuntu-latest
+
+    steps:
+    
     - name: Test with pytest
       run: |
        pytest
-    - name: Checkout code
-      uses: actions/checkout@v4
-
+  security_scan_code:
+    needs: build_code
+    runs-on: ubuntu-latest
+    steps:
     - name: Run Trivy vulnerability scanner in repo mode
       uses: aquasecurity/trivy-action@0.28.0
       with:
@@ -66,7 +78,7 @@ jobs:
         sarif_file: 'trivy-results.sarif'
 
   build_docker_image:
-    needs: build_test_code
+    needs: [lint_code, pytest_code, security_scan_code]
     runs-on: ubuntu-latest
 
     steps:
