@@ -16,21 +16,36 @@ This repository sets up a complete CI/CD pipeline using **GitHub Actions** to li
 
 ## ⚙️ CI/CD Workflow Overview
 
-### 🔍 `build_test_code`
+### 🔎 `lint_code`
 
 Triggered on push or PR to the `main` branch:
 - Sets up Python 3.10
 - Installs dependencies from `requirements.txt`
-- Lints code using `flake8`
-- Runs `pytest` tests
-- Scans the source code with Trivy for critical vulnerabilities
-- Uploads SARIF report to GitHub Security tab
+- Runs `flake8` to check for code quality and style issues
+
+### ✅ `pytest_code`
+
+Triggered on push or PR to the `main` branch:
+- Sets up Python 3.10
+- Installs dependencies from `requirements.txt`
+- Runs `pytest` to execute unit tests
+
+### 🔐 `security_scan_code`
+
+Triggered on push or PR to the `main` branch:
+- Sets up Python 3.10
+- Installs dependencies from `requirements.txt`
+- Scans the source code using Trivy to identify critical vulnerabilities
+- Uploads a SARIF report to GitHub’s Security tab for code scanning
 
 ### 🛠️ `build_docker_image`
 
-Triggered after successful code tests:
-- Builds and pushes Docker image using [Docker Buildx](https://github.com/docker/build-push-action)
-- Pushes image to **GitHub Container Registry**
+Runs after all previous jobs (`lint_code`, `pytest_code`, `security_scan_code`) succeed:
+
+- Checks out the code and sets up Docker Buildx
+- Logs in to GitHub Container Registry
+- Builds a Docker image using the provided `Dockerfile`
+- Pushes the image to **ghcr.io**
 
 ### 🚀 `deploy_image`
 
