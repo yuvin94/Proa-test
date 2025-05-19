@@ -9,4 +9,4 @@ def client():
 def test_404_route(client):
     response = client.get("/non-existent-endpoint")
     assert response.status_code == 404
-    assert b"Not Found" in response.data  # Optional: check default error message
+    assert b"Not Found" in response.data  
