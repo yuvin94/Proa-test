@@ -62,7 +62,7 @@ The repository includes basic unit tests to verify endpoint functionality. These
 
 ```python
 import pytest
-from app.app import app  # Update as needed if your Flask file name differs
+from app.app import app  
 
 @pytest.fixture
 def client():
@@ -89,7 +89,7 @@ def client():
 def test_404_route(client):
     response = client.get("/non-existent-endpoint")
     assert response.status_code == 404
-    assert b"Not Found" in response.data  # Optional content check
+    assert b"Not Found" in response.data  
 ```
 
 These tests verify the availability of a health check endpoint and the app's behavior on invalid routes.
