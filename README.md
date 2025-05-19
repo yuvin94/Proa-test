@@ -56,7 +56,7 @@ Triggered after Docker image is built:
 
 ## 🧪 Pytest Tests
 
-The repository includes basic unit tests to verify endpoint functionality. These are located in your test suite and executed during the `build_test_code` job.
+The repository includes basic unit tests to verify endpoint functionality. These are located in your test suite and executed during the `pytest_code` job.
 
 ### ✅ `test_healthz`
 
